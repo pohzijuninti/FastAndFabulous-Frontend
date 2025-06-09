@@ -1,0 +1,203 @@
+/* ====== Base Styling ====== */
+.App {
+  font-family: Arial, Tahoma, sans-serif;
+  text-align: center;
+  padding: 10px 40px;
+}
+
+.App h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  font-family: 'Georgia', serif;
+  color: #0b0b23;
+}
+
+/* ====== Masonry Layout ====== */
+.masonry {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.item {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ====== Image Styling ====== */
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+
+
+.image-container:hover {
+  transform: scale(1.02);
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+/* ====== Overlay ====== */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.image-container:hover .overlay {
+  opacity: 1;
+}
+
+.photographer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.photographer img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ====== Modal Styling ====== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: auto;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: left;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.modal-image {
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto 16px auto;
+  border-radius: 10px;
+}
+
+.preview-image {
+  max-height: 60vh;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.modal-details {
+  padding-top: 12px;
+}
+
+.modal-details p {
+  margin: 6px 0;
+  color: #333;
+}
+
+.modal-details a {
+  color: #3498db;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.modal-details a:hover {
+  text-decoration: underline;
+}
+
+/* ====== Download Button ====== */
+.download {
+  margin-top: 16px;
+  background-color: #0b0b23;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.download:hover {
+  background-color: #1a1a3d;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 1024px) {
+  .App {
+    padding: 0px;
+  }
+
+  .masonry {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .masonry-column {
+    width: 100%;
+  }
+
+  .modal-image {
+    max-width: 80%;
+    max-height: 40vh;
+  }
+}
+
+@media (min-width: 1025px) {
+  .masonry-column {
+    flex: 1;
+    min-width: 100px;
+  }
+}
+
