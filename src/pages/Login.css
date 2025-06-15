@@ -1,0 +1,91 @@
+/* Login.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: white !important;
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.login-form .form-group {
+  margin-bottom: 16px;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s ease;
+  font-size: 15px;
+}
+
+.btn-filled {
+  background-color: #545454;
+  color: white;
+}
+
+.btn-filled:hover {
+  background-color: #585858;
+}
+
+.btn-plain {
+  background-color: transparent;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+.btn-plain:hover {
+  background-color: #6f6f6f;
+  color: white;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.separator {
+  text-align: center;
+  margin: 16px 0;
+  color: #666;
+  font-size: 14px;
+}

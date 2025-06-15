@@ -24,23 +24,92 @@ function BookmarkPage() {
       .catch(console.error);
   }, []);
 
+  const handleDeleteCar = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this car bookmark?')) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/delete/bookmarks/cars/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Failed to delete car');
+
+      setCars(prev => prev.filter(car => car.id !== id));
+      alert('Car deleted.');
+    } catch (err) {
+      console.error(err);
+      alert('Error deleting car.');
+    }
+  };
+
+  const handleEditCar = async (car) => {
+    const updatedClass = prompt('Enter new class:', car.class);
+    const updatedCylinders = prompt('Enter number of cylinders:', car.cylinders);
+    const updatedDisplacement = prompt('Enter displacement:', car.displacement);
+    const updatedMake = prompt('Enter make:', car.make);
+    const updatedModel = prompt('Enter model:', car.model);
+    const updatedYear = prompt('Enter year:', car.year);
+
+    if (
+      !updatedClass || !updatedCylinders || !updatedDisplacement ||
+      !updatedMake || !updatedModel || !updatedYear
+    ) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/update/bookmarks/cars/${car.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          class: updatedClass,
+          cylinders: Number(updatedCylinders),
+          displacement: Number(updatedDisplacement),
+          make: updatedMake,
+          model: updatedModel,
+          year: Number(updatedYear),
+        }),
+      });
+
+      if (!res.ok) throw new Error('Failed to update car');
+
+      setCars(prev =>
+        prev.map(c => c.id === car.id
+          ? {
+              ...c,
+              class: updatedClass,
+              cylinders: Number(updatedCylinders),
+              displacement: Number(updatedDisplacement),
+              make: updatedMake,
+              model: updatedModel,
+              year: Number(updatedYear),
+            }
+          : c
+        )
+      );
+
+      alert('Car updated.');
+    } catch (err) {
+      console.error(err);
+      alert('Error updating car.');
+    }
+  };
+
   const handleDeleteBike = async (id) => {
-  if (!window.confirm('Are you sure you want to delete this motorcycle bookmark?')) return;
+    if (!window.confirm('Are you sure you want to delete this motorcycle bookmark?')) return;
 
-  try {
-    const res = await fetch(`http://localhost:4000/delete/bookmarks/motorcycles/${id}`, {
-      method: 'DELETE',
-    });
+    try {
+      const res = await fetch(`http://localhost:4000/delete/bookmarks/motorcycles/${id}`, {
+        method: 'DELETE',
+      });
 
-    if (!res.ok) throw new Error('Failed to delete motorcycle');
+      if (!res.ok) throw new Error('Failed to delete motorcycle');
 
-    setBikes(prev => prev.filter(b => b._id !== id));
-    alert('Motorcycle deleted.');
-  } catch (err) {
-    console.error(err);
-    alert('Error deleting motorcycle.');
-  }
-};
+      setBikes(prev => prev.filter(b => b._id !== id));
+      alert('Motorcycle deleted.');
+    } catch (err) {
+      console.error(err);
+      alert('Error deleting motorcycle.');
+    }
+  };
 
   const handleEditBike = async (bike) => {
     const newName = prompt('Enter new Make Name:', bike.MakeName);
@@ -63,29 +132,84 @@ function BookmarkPage() {
     }
   };
 
+  const handleDeleteModel = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this model?')) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/delete/bookmarks/models/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Failed to delete model');
+
+      setModels(prev => prev.filter(model => model.id !== id));
+      alert('Model deleted.');
+    } catch (err) {
+      console.error(err);
+      alert('Error deleting model.');
+    }
+  };
+
+  const handleEditModel = async (model) => {
+    const newPhotographer = prompt('Enter new Photographer name:', model.photographer);
+    if (!newPhotographer || newPhotographer.trim() === '' || newPhotographer === model.photographer) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/update/bookmarks/models/${model.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ photographer: newPhotographer }),
+      });
+
+      if (!res.ok) throw new Error('Failed to update model');
+
+      setModels(prev => prev.map(m => m.id === model.id ? { ...m, photographer: newPhotographer } : m));
+      alert('Photographer updated.');
+    } catch (err) {
+      console.error(err);
+      alert('Error updating model.');
+    }
+  };
+
   return (
     <div className="home-container">
       <h1 className="home-title">Your Bookmarked Items</h1>
       <p className="home-subtitle">Here are the cars, motorcycles, and models you saved:</p>
 
       <div className="home-grid">
-        <div className="card large-card bookmark-style">
+        {/* Car bookmarks */}
+        <div className="card">
           <h2>Bookmarked Cars ({cars.length})</h2>
           <div className="bookmark-list">
             {cars.length === 0 ? (
               <p>No bookmark for cars.</p>
             ) : (
-              cars.map(car => (
-                <div key={car.id} className="list-tile">
-                  <img src={car.image} alt={car.model} />
-                  <span>{car.make} {car.model} ({car.year})</span>
+              cars.map((car, index) => (
+                <div key={car.id} className="list-tile row-tile">
+                  <div className="tile-image">
+                    <img src={car.image} alt={car.model} />
+                  </div>
+                  <div className="tile-info">
+                    <p><strong>Brand:</strong> {car.make}</p>
+                    <p><strong>Model:</strong> {car.model}</p>
+                    <p><strong>Class:</strong> {car.class}</p>
+                    <p><strong>Year:</strong> {car.year}</p>
+                    <p><strong>Cylinders:</strong> {car.cylinders}</p>
+                    <p><strong>Displacement:</strong> {car.displacement}</p>
+                    <div className="tile-buttons">
+                      <button onClick={() => handleEditCar(car)}>Edit</button>
+                      <button onClick={() => handleDeleteCar(car.id)}>Delete</button>
+                    </div>
+                  </div>
                 </div>
               ))
             )}
           </div>
         </div>
 
+        {/* Right stack: Bikes + Models */}
         <div className="right-stack">
+          {/* Bike bookmarks */}
           <div className="card">
             <h2>Bookmarked Bikes ({bikes.length})</h2>
             <div className="bookmark-list">
@@ -112,16 +236,27 @@ function BookmarkPage() {
             </div>
           </div>
 
-          <div className="card small-card bookmark-card">
+          {/* Model bookmarks */}
+          <div className="card">
             <h2>Bookmarked Models ({models.length})</h2>
             <div className="bookmark-list">
               {models.length === 0 ? (
                 <p>No bookmark for models.</p>
               ) : (
                 models.map(model => (
-                  <div key={model.id} className="list-tile">
-                    <img src={model.url} alt="model" />
-                    <span>{model.photographer}</span>
+                  <div key={model.id} className="list-tile row-tile">
+                    <div className="tile-image">
+                      <img src={model.url} alt="model" />
+                    </div>
+                    <div className="tile-info">
+                      <p><strong>ID:</strong> {model.id}</p>
+                      <p><strong>Photographer:</strong> {model.photographer}</p>
+                      <p><strong>Image URL:</strong> <a href={model.url} target="_blank" rel="noopener noreferrer">{model.url}</a></p>
+                      <div className="tile-buttons">
+                        <button onClick={() => handleEditModel(model)}>Edit</button>
+                        <button onClick={() => handleDeleteModel(model.id)}>Delete</button>
+                      </div>
+                    </div>
                   </div>
                 ))
               )}
