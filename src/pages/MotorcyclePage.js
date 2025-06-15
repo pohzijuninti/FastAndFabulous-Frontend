@@ -1,57 +1,122 @@
 import React, { useEffect, useState } from 'react';
-import '../App.css';
+import './MotorcyclePage.css';
 
 function MotorcyclePage() {
-  const [data, setData] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [motorcycles, setMotorcycles] = useState([]);
+  const [selectedBike, setSelectedBike] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/girls')
-      .then(res => res.json())
-      .then(data => {
-        const filtered = data.filter(item => item.category === 'motorcycle');
-        setData(filtered);
-      });
+    const fetchMotorcycles = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('http://localhost:4000/api/motorcycles');
+        const data = await res.json();
+        setMotorcycles(data);
+      } catch (err) {
+        console.error('Error fetching motorcycles:', err);
+        setMotorcycles([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMotorcycles();
   }, []);
+
+  const handleBookmark = async () => {
+    if (!selectedBike || isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        MakeId: selectedBike.MakeId,
+        MakeName: selectedBike.MakeName,
+        VehicleTypeName: selectedBike.VehicleTypeName,
+        image: selectedBike.image || '',
+      };
+
+      console.log('Posting to /post/bookmarks/motorcycles:', payload);
+
+      const response = await fetch('http://localhost:4000/post/bookmarks/motorcycles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to bookmark motorcycle');
+      }
+
+      alert('Motorcycle added to bookmarks!');
+      setSelectedBike(null);
+    } catch (err) {
+      console.error('Error bookmarking motorcycle:', err.message);
+      alert('Failed to bookmark motorcycle. See console for details.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="App">
-      <h1>Motorcycle Gallery</h1>
-      <div className="masonry">
-        {data.map((item) => (
-          <div key={item.id} className="item">
-            <div className="image-container" onClick={() => setSelectedItem(item)}>
-              <img src={item.url} alt="motorcycle" />
-              <div className="overlay">
-                <div className="photographer">
-                  <span role="img" aria-label="avatar" className="avatar-icon">👤</span>
-                  <span>{item.photographer}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <header>
+        <h1>Motorcycles</h1>
+      </header>
 
-      {selectedItem && (
-        <div className="modal-backdrop" onClick={() => setSelectedItem(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setSelectedItem(null)}>✖</button>
-            <img
-              className="modal-image preview-image"
-              src={selectedItem.url}
-              alt="preview"
-            />
-            <div className="modal-details">
-              <h2>{selectedItem.photographer}</h2>
-              <p>🆔 Photo ID: {selectedItem.id}</p>
-              <p>📂 Category: {selectedItem.category}</p>
-              <p>🔗 URL: <a href={selectedItem.url} target="_blank" rel="noopener noreferrer">{selectedItem.url}</a></p>
-              <button
-                className="download"
-                onClick={() => window.open(selectedItem.url, '_blank')}
+      <main>
+        {loading ? (
+          <p>Loading motorcycles...</p>
+        ) : motorcycles.length === 0 ? (
+          <p>No motorcycles available.</p>
+        ) : (
+          <section className="motorcycle-list">
+            {motorcycles.map(bike => (
+              <article
+                key={bike.MakeId}
+                className="motorcycle-card"
+                onClick={() => setSelectedBike(bike)}
               >
-                ⬇ Download
+                {bike.image && (
+                  <img
+                    src={bike.image}
+                    alt={bike.MakeName}
+                    className="motorcycle-image"
+                  />
+                )}
+                <h3>{bike.MakeName}</h3>
+                <p><strong>ID:</strong> {bike.MakeId}</p>
+                <p><strong>Type:</strong> {bike.VehicleTypeName}</p>
+              </article>
+            ))}
+          </section>
+        )}
+      </main>
+
+      {selectedBike && (
+        <div className="modal-backdrop" onClick={() => setSelectedBike(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedBike(null)}>✖</button>
+            {selectedBike.image && (
+              <img
+                className="modal-image preview-image"
+                src={selectedBike.image}
+                alt={selectedBike.MakeName}
+              />
+            )}
+            <div className="modal-details">
+              <h2>{selectedBike.MakeName}</h2>
+              <p><strong>Make ID:</strong> {selectedBike.MakeId}</p>
+              <p><strong>Type:</strong> {selectedBike.VehicleTypeName}</p>
+              <button
+                className="bookmark"
+                onClick={handleBookmark}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Adding...' : 'Add to Bookmark'}
               </button>
             </div>
           </div>

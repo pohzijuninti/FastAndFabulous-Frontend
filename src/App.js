@@ -4,11 +4,12 @@ import HomePage from './pages/HomePage';
 import CarPage from './pages/CarPage';
 import MotorcyclePage from './pages/MotorcyclePage';
 import ModelPage from './pages/ModelPage';
+import BookmarkPage from './pages/BookmarkPage';
 import './App.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/FastAndFabulous">
       <div className="App">
         <nav className="navbar">
           <div className="nav-left">
@@ -40,6 +41,13 @@ function App() {
             >
               Model
             </NavLink>
+            <NavLink
+              to="/bookmark"
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              Bookmark
+            </NavLink>
+
           </div>
 
           <div className="nav-right">
@@ -57,6 +65,7 @@ function App() {
           <Route path="/car" element={<CarPage />} />
           <Route path="/motorcycle" element={<MotorcyclePage />} />
           <Route path="/model" element={<ModelPage />} />
+          <Route path="/bookmark" element={<BookmarkPage />} />
         </Routes>
       </div>
     </Router>

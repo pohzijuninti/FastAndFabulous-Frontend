@@ -157,7 +157,7 @@
 }
 
 /* ====== Download Button ====== */
-.download {
+.bookmark {
   margin-top: 16px;
   background-color: #0b0b23;
   color: white;
@@ -169,7 +169,7 @@
   transition: background-color 0.2s ease;
 }
 
-.download:hover {
+.bookmark:hover {
   background-color: #1a1a3d;
 }
 

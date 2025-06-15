@@ -63,6 +63,12 @@ html, body {
   transition: 0.3s ease;
 }
 
+.large-card h2 {
+  font-size: 52px; 
+  font-weight: bold;
+}
+
+
 .large-card:hover {
   background-color: #e0e0e0;
   transform: scale(1.01);
