@@ -10,7 +10,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router basename="/">
+    <Router basename="/FastAndFabulous-Frontend">
       <div className="App">
         <nav className="navbar">
           <div className="nav-left">
