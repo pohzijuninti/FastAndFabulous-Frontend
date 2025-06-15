@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import Login from './pages/Login';
 import HomePage from './pages/HomePage';
 import CarPage from './pages/CarPage';
 import MotorcyclePage from './pages/MotorcyclePage';
@@ -9,16 +10,16 @@ import './App.css';
 
 function App() {
   return (
-    <Router basename="/FastAndFabulous">
+    <Router basename="/">
       <div className="App">
         <nav className="navbar">
           <div className="nav-left">
-            <NavLink to="/" className="site-title">
+            <NavLink to="/home" className="site-title">
               Fast & Fabulous
             </NavLink>
 
             <NavLink
-              to="/"
+              to="/home"
               className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
             >
               Home
@@ -61,7 +62,8 @@ function App() {
         </nav>
 
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Login />} />  
+          <Route path="/home" element={<HomePage />} />
           <Route path="/car" element={<CarPage />} />
           <Route path="/motorcycle" element={<MotorcyclePage />} />
           <Route path="/model" element={<ModelPage />} />
