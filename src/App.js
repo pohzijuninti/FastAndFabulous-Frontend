@@ -1,5 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  NavLink,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import Login from './pages/Login';
 import HomePage from './pages/HomePage';
 import CarPage from './pages/CarPage';
@@ -10,7 +18,16 @@ import './App.css';
 
 function AppLayout() {
   const location = useLocation();
-  const hideNavbar = location.pathname === '/'; // login page path
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  // Hide navbar on login page
+  const hideNavbar = location.pathname === '/login';
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login'); // Redirect to login page
+  };
 
   return (
     <div className="App">
@@ -26,15 +43,20 @@ function AppLayout() {
             <NavLink to="/model" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Model</NavLink>
             <NavLink to="/bookmark" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Bookmark</NavLink>
           </div>
+
           <div className="nav-right">
-            <NavLink to="/signup" className="btn btn-plain">Sign up</NavLink>
-            <NavLink to="/login" className="btn btn-filled">Log in</NavLink>
+            {token ? (
+              <button className="btn btn-filled" onClick={handleLogout}>Logout</button>
+            ) : (
+              <NavLink to="/login" className="btn btn-filled">Log in</NavLink>
+            )}
           </div>
         </nav>
       )}
 
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/car" element={<CarPage />} />
         <Route path="/motorcycle" element={<MotorcyclePage />} />
