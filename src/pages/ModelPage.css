@@ -201,3 +201,12 @@
   }
 }
 
+.search-input {
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
