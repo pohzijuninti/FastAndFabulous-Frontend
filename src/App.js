@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,6 +8,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
+import { FaUser } from 'react-icons/fa';
 import Login from './pages/Login';
 import HomePage from './pages/HomePage';
 import CarPage from './pages/CarPage';
@@ -20,6 +21,7 @@ function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // Hide navbar on login page
   const hideNavbar = location.pathname === '/login';
@@ -27,6 +29,32 @@ function AppLayout() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login'); // Redirect to login page
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm('Are you sure you want to delete your account?');
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch('http://localhost:4000/delete-account', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        localStorage.removeItem('token');
+        navigate('/login');
+      } else {
+        alert(data.error || 'Delete failed');
+      }
+    } catch (err) {
+      alert('Server error');
+    }
   };
 
   return (
@@ -46,7 +74,17 @@ function AppLayout() {
 
           <div className="nav-right">
             {token ? (
-              <button className="btn btn-filled" onClick={handleLogout}>Logout</button>
+              <div className="user-actions">
+                <div className="user-icon-wrapper">
+                  <FaUser className="user-icon" onClick={() => setShowDropdown(!showDropdown)} />
+                  {showDropdown && (
+                    <div className="dropdown-menu">
+                      <button onClick={handleDeleteAccount} className="dropdown-item">Delete Account</button>
+                    </div>
+                  )}
+                </div>
+                <button className="btn btn-filled" onClick={handleLogout}>Logout</button>
+              </div>
             ) : (
               <NavLink to="/login" className="btn btn-filled">Log in</NavLink>
             )}

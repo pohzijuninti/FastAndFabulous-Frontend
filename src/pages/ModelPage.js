@@ -4,25 +4,37 @@ import './ModelPage.css';
 function ModelPage() {
   const [models, setModels] = useState([]);
   const [selectedModel, setSelectedModel] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // New: to show fetch error
 
-  // Fetch models on page load
   useEffect(() => {
-    fetch('http://localhost:4000/api/models')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setModels(data);
-        else {
-          console.error("Expected array, got:", data);
-          setModels([]);
+    const fetchModels = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch('http://localhost:4000/api/models');
+        if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          setModels(data);
+        } else {
+          console.warn('⚠️ Expected array, got:', data);
+          setError('Invalid data format from server');
         }
-      })
-      .catch(err => {
-        console.error('Error fetching models:', err);
-        setModels([]);
-      });
+      } catch (err) {
+        console.error('❌ Error fetching models:', err);
+        setError('Failed to load models. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchModels();
   }, []);
 
-  // Bookmark handler
   const handleBookmark = async (model) => {
     const bookmarks = JSON.parse(localStorage.getItem('bookmarkedGirls')) || [];
     const isBookmarked = bookmarks.some(item => item.id === model.id);
@@ -59,29 +71,36 @@ function ModelPage() {
     <div className="App">
       <h1>Model Gallery (from Pexels API)</h1>
 
-      <div className="masonry">
-        {[0, 1, 2].map(col => (
-          <div className="masonry-column" key={col}>
-            {models
-              .filter((_, i) => i % 3 === col)
-              .map(model => (
-                <div key={model.id} className="item">
-                  <div className="image-container" onClick={() => setSelectedModel(model)}>
-                    <img src={model.url} alt="model" />
-                    <div className="overlay">
-                      <div className="photographer">
-                        <img src="https://i.pravatar.cc/32" alt="avatar" />
-                        <span>{model.photographer}</span>
+      {loading ? (
+        <p>Loading models...</p>
+      ) : error ? (
+        <p style={{ color: 'red' }}>{error}</p>
+      ) : models.length === 0 ? (
+        <p>No models found.</p>
+      ) : (
+        <div className="masonry">
+          {[0, 1, 2].map(col => (
+            <div className="masonry-column" key={col}>
+              {models
+                .filter((_, i) => i % 3 === col)
+                .map(model => (
+                  <div key={model.id} className="item">
+                    <div className="image-container" onClick={() => setSelectedModel(model)}>
+                      <img src={model.url} alt="model" />
+                      <div className="overlay">
+                        <div className="photographer">
+                          <img src="https://i.pravatar.cc/32" alt="avatar" />
+                          <span>{model.photographer}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-          </div>
-        ))}
-      </div>
+                ))}
+            </div>
+          ))}
+        </div>
+      )}
 
-      {/* Modal for model detail */}
       {selectedModel && (
         <div className="modal-backdrop" onClick={() => setSelectedModel(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>

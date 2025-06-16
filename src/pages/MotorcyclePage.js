@@ -6,17 +6,26 @@ function MotorcyclePage() {
   const [selectedBike, setSelectedBike] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null); // ✅ New
 
   useEffect(() => {
     const fetchMotorcycles = async () => {
       setLoading(true);
+      setError(null); // clear error on retry
       try {
         const res = await fetch('http://localhost:4000/api/motorcycles');
+        if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
         const data = await res.json();
-        setMotorcycles(data);
+
+        if (Array.isArray(data)) {
+          setMotorcycles(data);
+        } else {
+          console.warn('Expected array, got:', data);
+          setError('Invalid response format');
+        }
       } catch (err) {
         console.error('Error fetching motorcycles:', err);
-        setMotorcycles([]);
+        setError('Failed to fetch motorcycles. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -27,7 +36,6 @@ function MotorcyclePage() {
 
   const handleBookmark = async () => {
     if (!selectedBike || isSubmitting) return;
-
     setIsSubmitting(true);
 
     try {
@@ -37,8 +45,6 @@ function MotorcyclePage() {
         VehicleTypeName: selectedBike.VehicleTypeName,
         image: selectedBike.image || '',
       };
-
-      console.log('Posting to /post/bookmarks/motorcycles:', payload);
 
       const response = await fetch('http://localhost:4000/post/bookmarks/motorcycles', {
         method: 'POST',
@@ -70,6 +76,8 @@ function MotorcyclePage() {
       <main>
         {loading ? (
           <p>Loading motorcycles...</p>
+        ) : error ? (
+          <p style={{ color: 'red' }}>{error}</p>
         ) : motorcycles.length === 0 ? (
           <p>No motorcycles available.</p>
         ) : (
@@ -80,12 +88,14 @@ function MotorcyclePage() {
                 className="motorcycle-card"
                 onClick={() => setSelectedBike(bike)}
               >
-                {bike.image && (
+                {bike.image ? (
                   <img
                     src={bike.image}
                     alt={bike.MakeName}
                     className="motorcycle-image"
                   />
+                ) : (
+                  <div className="motorcycle-placeholder">No Image</div>
                 )}
                 <h3>{bike.MakeName}</h3>
                 <p><strong>ID:</strong> {bike.MakeId}</p>

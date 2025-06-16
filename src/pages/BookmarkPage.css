@@ -1,10 +1,10 @@
-/* --- Container Styles --- */
+/* ====== BookmarkPage.css (Updated) ====== */
+
 .bookmark-card {
   background-color: white;
   flex-direction: column;
 }
 
-/* --- Section Titles --- */
 .bookmark-card h2,
 .card-title-row h2 {
   margin: 0 0 10px 0;
@@ -16,10 +16,9 @@
   display: inline-block;
 }
 
-/* --- List Container Styles --- */
 .bookmark-list {
   width: 100%;
-  max-height: 220px;
+  max-height: 100%;
   overflow-y: auto;
   background-color: rgba(240, 240, 240, 0.9);
   padding: 10px;
@@ -38,7 +37,6 @@
   border-radius: 3px;
 }
 
-/* --- Scrollable list (motorcycles & reusable) --- */
 .scrollable-motorcycles {
   max-height: 400px;
   overflow-y: auto;
@@ -48,7 +46,6 @@
 .scrollable-motorcycles::-webkit-scrollbar {
   width: 8px;
 }
-
 .scrollable-motorcycles::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 4px;
@@ -57,7 +54,6 @@
   background-color: #555;
 }
 
-/* --- Row Tile (shared layout for car/bike) --- */
 .list-tile {
   display: flex;
   align-items: flex-start;
@@ -76,7 +72,6 @@
   background-color: rgba(0, 0, 0, 0.08);
 }
 
-/* --- Image Styling --- */
 .tile-image img {
   width: 120px;
   height: auto;
@@ -86,7 +81,6 @@
   margin-right: 16px;
 }
 
-/* --- Info Block --- */
 .tile-info {
   flex: 1;
 }
@@ -97,7 +91,6 @@
   line-height: 1.4;
 }
 
-/* --- Button Group --- */
 .tile-buttons {
   margin-top: 8px;
 }
@@ -106,11 +99,11 @@
   margin-right: 8px;
 }
 
-/* --- Large card layout alignment --- */
 .large-card.bookmark-style {
   align-items: flex-start;
   justify-content: flex-start;
   text-align: left;
+  height: 100%;
 }
 
 .large-card.bookmark-style:hover {
@@ -120,4 +113,33 @@
 
 .bookmark-models .list-tile {
   background-color: #eef9ff;
+}
+
+/* Ensure right stack bookmarks are each 50% height */
+.right-stack {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.right-stack .card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 50%;
+}
+
+.right-stack .bookmark-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.right-stack .bookmark-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.right-stack .bookmark-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
 }
