@@ -107,7 +107,7 @@ function AppLayout() {
 
 function App() {
   return (
-    <Router basename="/FastAndFabulous-Frontend">
+    <Router basename="">
       <AppLayout />
     </Router>
   );
