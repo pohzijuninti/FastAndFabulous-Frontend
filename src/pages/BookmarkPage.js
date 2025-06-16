@@ -8,17 +8,17 @@ function BookmarkPage() {
   const [models, setModels] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/get/bookmarks/cars')
+    fetch('https://fastandfabulous-backend.onrender.com/get/bookmarks/cars')
       .then(res => res.json())
       .then(data => setCars(Array.isArray(data) ? data : []))
       .catch(console.error);
 
-    fetch('http://localhost:4000/get/bookmarks/motorcycles')
+    fetch('https://fastandfabulous-backend.onrender.com/get/bookmarks/motorcycles')
       .then(res => res.json())
       .then(data => setBikes(Array.isArray(data) ? data : []))
       .catch(console.error);
 
-    fetch('http://localhost:4000/get/bookmarks/models')
+    fetch('https://fastandfabulous-backend.onrender.com/get/bookmarks/models')
       .then(res => res.json())
       .then(data => setModels(Array.isArray(data) ? data : []))
       .catch(console.error);
@@ -28,7 +28,7 @@ function BookmarkPage() {
     if (!window.confirm('Are you sure you want to delete this car bookmark?')) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/delete/bookmarks/cars/${id}`, {
+      const res = await fetch(`https://fastandfabulous-backend.onrender.com/delete/bookmarks/cars/${id}`, {
         method: 'DELETE',
       });
 
@@ -56,7 +56,7 @@ function BookmarkPage() {
     ) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/update/bookmarks/cars/${car.id}`, {
+      const res = await fetch(`https://fastandfabulous-backend.onrender.com/update/bookmarks/cars/${car.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -97,7 +97,7 @@ function BookmarkPage() {
     if (!window.confirm('Are you sure you want to delete this motorcycle bookmark?')) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/delete/bookmarks/motorcycles/${id}`, {
+      const res = await fetch(`https://fastandfabulous-backend.onrender.com/delete/bookmarks/motorcycles/${id}`, {
         method: 'DELETE',
       });
 
@@ -116,7 +116,7 @@ function BookmarkPage() {
     if (!newName || newName.trim() === '' || newName === bike.MakeName) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/update/bookmarks/motorcycles/${bike._id}`, {
+      const res = await fetch(`https://fastandfabulous-backend.onrender.com/update/bookmarks/motorcycles/${bike._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ MakeName: newName }),
@@ -136,7 +136,7 @@ function BookmarkPage() {
     if (!window.confirm('Are you sure you want to delete this model?')) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/delete/bookmarks/models/${id}`, {
+      const res = await fetch(`https://fastandfabulous-backend.onrender.com/delete/bookmarks/models/${id}`, {
         method: 'DELETE',
       });
 
@@ -155,7 +155,7 @@ function BookmarkPage() {
     if (!newPhotographer || newPhotographer.trim() === '' || newPhotographer === model.photographer) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/update/bookmarks/models/${model.id}`, {
+      const res = await fetch(`https://fastandfabulous-backend.onrender.com/update/bookmarks/models/${model.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ photographer: newPhotographer }),

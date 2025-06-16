@@ -36,7 +36,7 @@ function AppLayout() {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch('http://localhost:4000/delete-account', {
+      const res = await fetch('https://fastandfabulous-backend.onrender.com/delete-account', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

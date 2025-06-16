@@ -20,8 +20,8 @@ function ModelPage() {
     setError(null);
 
     const url = query
-      ? `http://localhost:4000/api/images/${encodeURIComponent(query)}`
-      : 'http://localhost:4000/api/models';
+      ? `https://fastandfabulous-backend.onrender.com/api/images/${encodeURIComponent(query)}`
+      : 'https://fastandfabulous-backend.onrender.com/api/models';
 
     try {
       const res = await fetch(url);
@@ -57,7 +57,7 @@ function ModelPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/post/bookmarks/models', {
+      const response = await fetch('https://fastandfabulous-backend.onrender.com/post/bookmarks/models', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

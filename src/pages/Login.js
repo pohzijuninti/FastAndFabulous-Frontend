@@ -13,7 +13,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:4000/login', {
+      const response = await fetch('https://fastandfabulous-backend.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -43,7 +43,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/register', {
+      const response = await fetch('https://fastandfabulous-backend.onrender.com/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

@@ -28,9 +28,9 @@ function HomePage() {
         .catch(err => console.error(`Failed to fetch from ${apiUrl}:`, err));
     };
 
-    const clearCar = setupImageRotation('http://localhost:4000/api/cars', setCarImage);
-    const clearMotorcycle = setupImageRotation('http://localhost:4000/api/motorcycles', setMotorcycleImage);
-    const clearModel = setupImageRotation('http://localhost:4000/api/models', setModelImage);
+    const clearCar = setupImageRotation('https://fastandfabulous-backend.onrender.com/api/cars', setCarImage);
+    const clearMotorcycle = setupImageRotation('https://fastandfabulous-backend.onrender.com/api/motorcycles', setMotorcycleImage);
+    const clearModel = setupImageRotation('https://fastandfabulous-backend.onrender.com/api/models', setModelImage);
 
     return () => {
       clearCar && clearCar();

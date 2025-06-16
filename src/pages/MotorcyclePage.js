@@ -13,7 +13,7 @@ function MotorcyclePage() {
       setLoading(true);
       setError(null); // clear error on retry
       try {
-        const res = await fetch('http://localhost:4000/api/motorcycles');
+        const res = await fetch('https://fastandfabulous-backend.onrender.com/api/motorcycles');
         if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
         const data = await res.json();
 
@@ -46,7 +46,7 @@ function MotorcyclePage() {
         image: selectedBike.image || '',
       };
 
-      const response = await fetch('http://localhost:4000/post/bookmarks/motorcycles', {
+      const response = await fetch('https://fastandfabulous-backend.onrender.com/post/bookmarks/motorcycles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

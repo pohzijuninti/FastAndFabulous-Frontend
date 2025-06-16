@@ -13,7 +13,7 @@ function CarPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('http://localhost:4000/api/cars');
+        const res = await fetch('https://fastandfabulous-backend.onrender.com/api/cars');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
@@ -41,7 +41,7 @@ function CarPage() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:4000/post/bookmarks/cars', {
+      const response = await fetch('https://fastandfabulous-backend.onrender.com/post/bookmarks/cars', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(selectedCar),
