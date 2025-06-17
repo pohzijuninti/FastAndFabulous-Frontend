@@ -2,6 +2,8 @@ body, .App {
   font-family: Arial, Tahoma, sans-serif;
   text-align: center;
   padding: 10px 20px;
+  height: auto;
+  overflow-y: auto;
 }
 
 .navbar {
@@ -82,7 +84,7 @@ a:not(.card):hover {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 30px;
-  height: 600px;
+  height: calc(100vh - 160px);
   align-items: stretch;
 }
 
@@ -114,6 +116,7 @@ a:not(.card):hover {
   flex-direction: column;
   gap: 20px;
   height: 100%;
+  overflow: auto;
 }
 
 .small-card {

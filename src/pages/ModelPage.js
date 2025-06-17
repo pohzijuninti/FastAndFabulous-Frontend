@@ -8,13 +8,12 @@ function ModelPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [bookmarkedIds, setBookmarkedIds] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ Like MotorcyclePage
 
-  // Load default models on mount
   useEffect(() => {
-    fetchModels(); // fetch default list
+    fetchModels(); // Load default list
   }, []);
 
-  // Fetch models (optionally with search query)
   const fetchModels = async (query = '') => {
     setLoading(true);
     setError(null);
@@ -41,7 +40,6 @@ function ModelPage() {
     }
   };
 
-  // Handle search submit
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() !== '') {
@@ -49,31 +47,31 @@ function ModelPage() {
     }
   };
 
-  // Handle bookmark action
-  const handleBookmark = async (model) => {
-    if (bookmarkedIds.includes(model.id)) {
-      alert('Already bookmarked!');
-      return;
-    }
+  const handleBookmark = async () => {
+    if (!selectedModel || isSubmitting) return;
 
+    setIsSubmitting(true);
     try {
       const response = await fetch('https://fastandfabulous-backend.onrender.com/post/bookmarks/models', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          id: model.id,
-          url: model.url,
-          photographer: model.photographer,
+          id: selectedModel.id,
+          url: selectedModel.url,
+          photographer: selectedModel.photographer,
         }),
       });
 
       if (!response.ok) throw new Error('Failed to save to MongoDB');
 
-      alert('Added to bookmarks!');
-      setBookmarkedIds(prev => [...prev, model.id]);
+      alert('Model added to bookmarks!');
+      setBookmarkedIds(prev => [...prev, selectedModel.id]);
+      setSelectedModel(null); // ✅ Close modal after bookmarking
     } catch (error) {
       console.error('MongoDB error:', error);
       alert('Failed to save bookmark to server.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -141,10 +139,14 @@ function ModelPage() {
               </p>
               <button
                 className="bookmark"
-                onClick={() => handleBookmark(selectedModel)}
-                disabled={bookmarkedIds.includes(selectedModel.id)}
+                onClick={handleBookmark}
+                disabled={isSubmitting || bookmarkedIds.includes(selectedModel.id)}
               >
-                {bookmarkedIds.includes(selectedModel.id) ? 'Bookmarked' : 'Add to Bookmark'}
+                {bookmarkedIds.includes(selectedModel.id)
+                  ? 'Bookmarked'
+                  : isSubmitting
+                  ? 'Adding...'
+                  : 'Add to Bookmark'}
               </button>
             </div>
           </div>

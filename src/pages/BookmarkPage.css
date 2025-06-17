@@ -1,145 +1,181 @@
-/* ====== BookmarkPage.css (Updated) ====== */
-
-.bookmark-card {
-  background-color: white;
+html, body {
+  height: auto;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+/* ====== Container Setup ====== */
+.home-container {
+  display: flex;
   flex-direction: column;
+  padding: 20px 60px;
+  font-family: 'Arial', Tahoma, sans-serif;
+  text-align: left;
+  background-color: #fafafa;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-.bookmark-card h2,
-.card-title-row h2 {
-  margin: 0 0 10px 0;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 8px 12px;
-  border-radius: 6px;
-  display: inline-block;
+.home-title {
+  font-size: 34px;
+  font-style: italic;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-family: 'Georgia', serif;
 }
 
+.home-subtitle {
+  font-size: 18px;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+/* ====== Grid Layout ====== */
+.home-container .home-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 30px;
+}
+
+/* ====== Card Styles ====== */
+.card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 20px 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+  height: 100%; /* Fill the column */
+}
+
+.card h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* ====== Right Stack (Bikes + Models) ====== */
+
+
+/* Make each card inside right-stack take 50% height and scroll if content overflows */
+/* RIGHT COLUMN: stack Bikes and Models equally */
+.right-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Ensure both sections get 50% height and are scrollable */
+.right-stack .card {
+  flex: 1;
+  overflow-y: auto;
+  max-height: none;
+  min-height: 0;
+}
+
+
+/* ====== Bookmark List ====== */
 .bookmark-list {
-  width: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  background-color: rgba(240, 240, 240, 0.9);
-  padding: 10px;
-  border-radius: 12px;
-  font-size: 16px;
-  line-height: 1.5;
-  scrollbar-width: thin;
-  scrollbar-color: #888 transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.bookmark-list::-webkit-scrollbar {
-  width: 6px;
-}
-.bookmark-list::-webkit-scrollbar-thumb {
-  background-color: #999;
-  border-radius: 3px;
-}
-
-.scrollable-motorcycles {
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-
-.scrollable-motorcycles::-webkit-scrollbar {
-  width: 8px;
-}
-.scrollable-motorcycles::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-}
-.scrollable-motorcycles::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
+/* ====== List Tiles ====== */
 .list-tile {
   display: flex;
-  align-items: flex-start;
-  background: #f3f3f3;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  transition: background-color 0.2s;
+  gap: 20px;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.list-tile:hover {
+  background-color: #ececec;
 }
 
 .row-tile {
   flex-direction: row;
+  align-items: flex-start;
 }
 
-.list-tile:hover {
-  background-color: rgba(0, 0, 0, 0.08);
-}
-
+/* ====== Tile Image ====== */
 .tile-image img {
   width: 120px;
-  height: auto;
+  height: 80px;
   object-fit: cover;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-right: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* ====== Tile Info ====== */
 .tile-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .tile-info p {
-  font-size: 15px;
-  margin: 4px 0;
-  line-height: 1.4;
+  margin: 0;
+  font-size: 14px;
 }
 
+.tile-info a {
+  color: #0077cc;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.tile-info a:hover {
+  text-decoration: underline;
+}
+
+/* ====== Buttons ====== */
 .tile-buttons {
-  margin-top: 8px;
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .tile-buttons button {
-  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.2s ease;
 }
 
-.large-card.bookmark-style {
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
-  height: 100%;
+.tile-buttons button:hover {
+  background-color: #0056b3;
 }
 
-.large-card.bookmark-style:hover {
-  background-color: #f2f2f2;
-  transform: none;
+.tile-buttons button:last-child {
+  background-color: #dc3545;
 }
 
-.bookmark-models .list-tile {
-  background-color: #eef9ff;
+.tile-buttons button:last-child:hover {
+  background-color: #b02a37;
 }
 
-/* Ensure right stack bookmarks are each 50% height */
-.right-stack {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+/* ====== Responsive Design ====== */
+@media (max-width: 768px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tile-image img {
+    width: 100px;
+    height: 70px;
+  }
 }
 
-.right-stack .card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 50%;
-}
-
-.right-stack .bookmark-list {
-  flex: 1;
-  overflow-y: auto;
-}
-
-.right-stack .bookmark-list::-webkit-scrollbar {
+.right-stack .card::-webkit-scrollbar {
   width: 6px;
 }
 
-.right-stack .bookmark-list::-webkit-scrollbar-thumb {
-  background-color: #ccc;
+.right-stack .card::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }

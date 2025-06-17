@@ -80,6 +80,7 @@ html, body {
   flex-direction: column;
   gap: 20px;
   height: 100%;
+  flex: 1; /* <-- add this */
 }
 
 .small-card {
@@ -93,7 +94,9 @@ html, body {
   text-decoration: none;
   color: black;
   transition: 0.3s ease;
+  min-height: 0; 
 }
+
 
 .small-card:hover {
   background-color: #bfe6ea;
@@ -112,6 +115,7 @@ html, body {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+  height: 100%; 
 }
 
 .image-card::before {
